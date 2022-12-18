@@ -10,6 +10,8 @@ import com.example.backend_final.service.BookService;
 import com.example.backend_final.service.ReviewService;
 import com.example.backend_final.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +47,27 @@ public class ReviewServiceImpl implements ReviewService {
         review.setComment(request.getComment());
         user.getReviewList().add(review);
         book.getReviewList().add(review);
+        book.setRating((float) book.getReviewList().stream().mapToDouble(Review::getScore).average().getAsDouble());
         return Optional.of(reviewRepo.save(review));
+    }
+
+    @Override
+    public Optional<Review> getReviewByBookId(Long bookId){
+        return reviewRepo.findReviewByBookId(bookId);
+    }
+
+    @Override
+    public Optional<Review> getReviewByUsername(String username){
+        return reviewRepo.findReviewByUsername(username);
+    }
+
+    @Override
+    public Optional<Review> findById(Long aLong) {
+        return reviewRepo.findById(aLong);
+    }
+
+    @Override
+    public Page<Review> findAll(Pageable pageable) {
+        return reviewRepo.findAll(pageable);
     }
 }

@@ -1,18 +1,13 @@
 package com.example.backend_final.util;
 
 
-import com.example.backend_final.dto.BookDto;
-import com.example.backend_final.dto.OrderDetailDto;
-import com.example.backend_final.dto.OrderDto;
-import com.example.backend_final.dto.UserDto;
-import com.example.backend_final.model.Book;
-import com.example.backend_final.model.Order;
-import com.example.backend_final.model.OrderDetail;
-import com.example.backend_final.model.User;
+import com.example.backend_final.dto.*;
+import com.example.backend_final.model.*;
 
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -48,6 +43,9 @@ public class Mapper {
         book.setTotalPage(bookDTO.getTotalPage());
         book.setPrice(new BigDecimal(bookDTO.getPrice()));
         book.setDateRelease(bookDTO.getDateRelease());
+//        book.setRating(bookDTO.getRating());
+        book.setImageList(bookDTO.getImageList().stream().map(item -> this.toImage(item)).collect(Collectors.toList()));
+        book.getImageList().forEach(item -> item.setBook(book));
         return book;
     }
 
@@ -61,7 +59,23 @@ public class Mapper {
         bookDto.setTotalPage(book.getTotalPage());
         bookDto.setDateRelease(book.getDateRelease());
         bookDto.setPrice(book.getPrice().floatValue());
+        bookDto.setRating(book.getRating());
+//        bookDto.setRating((float) book.getReviewList().stream().mapToDouble(Review::getScore).average().getAsDouble());
+        bookDto.setImageList(book.getImageList().stream().map(item->this.toImageDto(item)).collect(Collectors.toList()));
         return bookDto;
+    }
+
+    public ImageDto toImageDto(Image image){
+        ImageDto imageDto = new ImageDto();
+        imageDto.setId(image.getId());
+        imageDto.setFileName(image.getFileName());
+        return imageDto;
+    }
+
+    public Image toImage(ImageDto imageDto){
+        Image image = new Image();
+        image.setFileName(imageDto.getFileName());
+        return image;
     }
 
     public OrderDto toOrderDto(Order order){
@@ -82,6 +96,18 @@ public class Mapper {
         orderDetailDto.setQuantity(orderDetail.getQuantity());
         orderDetailDto.setUnitPrice(orderDetail.getUnitPrice());
         return orderDetailDto;
+    }
+
+    public ReviewDto toReviewDto(Review review){
+        ReviewDto reviewDto = new ReviewDto();
+        User user = review.getUser();
+        Book book = review.getBook();
+        reviewDto.setBookDto(this.toBookDto(book));
+        reviewDto.setUserDto(this.toUserDto(user));
+        reviewDto.setId(review.getId());
+        reviewDto.setScore(review.getScore());
+        reviewDto.setComment(review.getComment());
+        return  reviewDto;
     }
 
 }

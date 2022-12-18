@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,
-                                          @RequestParam(value = "pageSize",defaultValue = "1") Integer pageSize,
+                                          @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
                                           @RequestParam(value = "sortBy",defaultValue = "username") String sortBy){
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<User> userPage = userService.findAll(pageable);

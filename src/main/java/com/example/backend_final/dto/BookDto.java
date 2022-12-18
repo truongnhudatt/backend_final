@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Getter
@@ -20,4 +21,6 @@ public class BookDto {
     private Date dateRelease;
     private int totalPage;
     private float price;
+    private List<ImageDto> imageList;
+    private float rating;
 }

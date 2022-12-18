@@ -41,6 +41,10 @@ public class Book {
     private BigDecimal price;
 
     @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "book")
+    private List<Image> imageList = new ArrayList<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
@@ -48,5 +52,7 @@ public class Book {
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
     private List<Review> reviewList = new ArrayList<>();
 
-    private float rating;
+    private float rating = 0;
+
+
 }

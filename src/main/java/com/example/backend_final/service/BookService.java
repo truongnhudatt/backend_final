@@ -3,6 +3,8 @@ package com.example.backend_final.service;
 
 import com.example.backend_final.dto.BookDto;
 import com.example.backend_final.model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,4 +24,6 @@ public interface BookService {
     void deleteById(Long aLong);
 
     void delete(Book entity);
+
+    Page<Book> findAll(Pageable pageable);
 }
