@@ -57,6 +57,25 @@ public class BookController {
         return ResponseEntity.ok(mapper.toBookDto(bookService.save(mapper.toBook(bookJson))));
     }
 
+    @PutMapping("/detail/update/{id}")
+    public ResponseEntity<?> updateBook(
+            @PathVariable("id") Long id,
+            @RequestParam("book") String book,
+            @RequestParam("image") MultipartFile[] images
+    ) throws JsonProcessingException, BookNotFoundException {
+        BookDto bookDto = new BookDto();
+        ObjectMapper objectMapper = new ObjectMapper();
+        bookDto = objectMapper.readValue(book, BookDto.class);
+        List<ImageDto> imageList = Arrays.stream(images).map(item ->
+                        new ImageDto(imageStorageService.storeFile(item)))
+                                .collect(Collectors.toList());
+        bookDto.setImageList(imageList);
+        System.out.println(bookDto);
+        return ResponseEntity.ok().body(mapper.toBookDto(bookService.updateBook(id,bookDto)));
+//        return ResponseEntity.ok(bookDto);
+    }
+
+
     @DeleteMapping("/remove-image/{filename}")
     public ResponseEntity<?> deleteFileImage(@PathVariable("filename") String fileName){
         imageStorageService.deleteFile(fileName);

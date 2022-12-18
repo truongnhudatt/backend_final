@@ -2,6 +2,7 @@ package com.example.backend_final.service;
 
 
 import com.example.backend_final.dto.BookDto;
+import com.example.backend_final.error.BookNotFoundException;
 import com.example.backend_final.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +27,6 @@ public interface BookService {
     void delete(Book entity);
 
     Page<Book> findAll(Pageable pageable);
+
+    Book updateBook(Long id, BookDto bookDto) throws BookNotFoundException;
 }
