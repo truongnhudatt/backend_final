@@ -6,12 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Transactional
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.user.username = ?1")
-    List<Order> getOrderByUsername(String username);
+    Optional<Order> getOrderByUsername(String username);
 }

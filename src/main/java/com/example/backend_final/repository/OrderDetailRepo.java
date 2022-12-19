@@ -16,4 +16,6 @@ public interface OrderDetailRepo extends JpaRepository<OrderDetail,Long> {
     @Modifying
     @Query("DELETE FROM OrderDetail ord WHERE ord.id = ?1")
     void deleteOrderDetail(Long orderDetailId);
+
+
 }

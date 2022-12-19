@@ -1,11 +1,9 @@
 package com.example.backend_final.payload.response;
 
 import com.example.backend_final.dto.BookDto;
-import jakarta.persistence.Column;
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -13,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-public class BookResp {
+public class BookResp implements Serializable {
     private List<BookDto> bookDtoList;
     private int pageNo;
     private int pageSize;

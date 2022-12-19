@@ -2,7 +2,7 @@ package com.example.backend_final.dto;
 
 import lombok.*;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDto {
+public class BookDto implements Serializable {
     private long id;
     private String title;
     private String author;

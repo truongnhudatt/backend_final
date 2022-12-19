@@ -3,11 +3,9 @@ package com.example.backend_final.util;
 
 import com.example.backend_final.dto.*;
 import com.example.backend_final.model.*;
-
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -82,9 +80,9 @@ public class Mapper {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setUsername(order.getUser().getUsername());
-        orderDto.setCreated(order.getCreated());
+//        orderDto.setCreated(order.getCreated());
         orderDto.setOrderDetailDtoList(order.getOrderDetailList().stream().map(item -> this.toOrderDetailDto(item)).collect(Collectors.toList()));
-        orderDto.setTotalPrice(order.getOrderDetailList().stream().map(OrderDetail::getUnitPrice).reduce(BigDecimal.ZERO,BigDecimal::add));
+//        orderDto.setTotalPrice(order.getOrderDetailList().stream().map(OrderDetail::getUnitPrice).reduce(BigDecimal.ZERO,BigDecimal::add));
         return orderDto;
     }
 
@@ -108,6 +106,18 @@ public class Mapper {
         reviewDto.setScore(review.getScore());
         reviewDto.setComment(review.getComment());
         return  reviewDto;
+    }
+
+    public BillDto toBillDto(Bill bill){
+        BillDto billDto = new BillDto();
+        billDto.setId(bill.getId());
+        billDto.setUserDto(this.toUserDto(bill.getUser()));
+        billDto.setPhone(bill.getPhone());
+        billDto.setAddress(bill.getAddress());
+        billDto.setOrderDetailDto(bill.getOrderDetailList().stream().map(ord -> this.toOrderDetailDto(ord)).collect(Collectors.toList()));
+        billDto.setTotalPrice(bill.getTotalPrice().floatValue());
+        billDto.setCreated(bill.getCreated());
+        return billDto;
     }
 
 }

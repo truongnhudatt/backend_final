@@ -41,3 +41,7 @@ logging:
     org:
       hibernate:
         type: TRACE
+backend_final:
+  app:
+    jwtSecret: TruongNhuDat039
+    jwtExpirationMs: 604800000

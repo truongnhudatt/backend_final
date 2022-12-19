@@ -3,7 +3,7 @@ package com.example.backend_final.payload.response;
 import com.example.backend_final.dto.OrderDetailDto;
 import lombok.*;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @ToString
-public class OrderDetailResp {
+public class OrderDetailResp implements Serializable {
     private List<OrderDetailDto> orderDetailDtoList;
 
     private int pageNo;

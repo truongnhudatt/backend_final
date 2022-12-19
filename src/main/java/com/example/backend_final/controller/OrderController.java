@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/orders")
+@CrossOrigin
 public class OrderController {
 
     @Autowired
@@ -35,7 +36,7 @@ public class OrderController {
     @GetMapping("/all")
     public ResponseEntity<OrderResp> getAllOrders(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,
                                           @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
-                                          @RequestParam(value = "sortBy",defaultValue = "created") String sortBy){
+                                          @RequestParam(value = "sortBy",defaultValue = "id") String sortBy){
         Pageable paging = PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
         Page<Order> orderPage = orderRepo.findAll(paging);
         List<Order> orderList = orderPage.getContent();

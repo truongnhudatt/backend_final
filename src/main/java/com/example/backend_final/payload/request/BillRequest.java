@@ -1,21 +1,21 @@
 package com.example.backend_final.payload.request;
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Setter
 @Getter
 @ToString
-@NoArgsConstructor
-public class ReviewRequest {
+public class BillRequest {
     @NotBlank
     private String username;
     @NotBlank
-    private long bookId;
+    private List<Long> listBookId;
     @NotBlank
-    private float score;
+    private String phone;
     @NotBlank
-    private String comment;
+    private String address;
 }

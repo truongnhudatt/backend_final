@@ -1,13 +1,10 @@
 package com.example.backend_final.controller;
 
 
-import com.example.backend_final.dto.OrderDto;
 import com.example.backend_final.dto.ReviewDto;
 import com.example.backend_final.error.BookNotFoundException;
-import com.example.backend_final.model.Order;
 import com.example.backend_final.model.Review;
 import com.example.backend_final.payload.request.ReviewRequest;
-import com.example.backend_final.payload.response.OrderResp;
 import com.example.backend_final.payload.response.ReviewResp;
 import com.example.backend_final.service.ReviewService;
 import com.example.backend_final.util.Mapper;
@@ -24,6 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
+@CrossOrigin
 public class ReviewController {
     @Autowired
     private ReviewService reviewService;

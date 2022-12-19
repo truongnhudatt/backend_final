@@ -2,6 +2,7 @@ package com.example.backend_final.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @ToString
 @NoArgsConstructor
-public class OrderDetailDto {
+public class OrderDetailDto implements Serializable {
     private long id;
     private BookDto bookDto;
     private int quantity;

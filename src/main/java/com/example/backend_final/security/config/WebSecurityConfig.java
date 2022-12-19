@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +24,14 @@ public class WebSecurityConfig {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+//    @Bean
+//    public JwtAthFilter jwtAthFilter() {
+//        return new JwtAthFilter();
+//    }
+
+    @Autowired
+    private JwtAthFilter jwtAthFilter;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -44,14 +54,21 @@ public class WebSecurityConfig {
                 .csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
+//                .requestMatchers("/api/v*/users/**").permitAll()
+//                .requestMatchers("/api/v*/books/**").hasAnyAuthority("USER")
+//                .requestMatchers("/api/v*/orders/**").hasAnyAuthority("USER")
+//                .requestMatchers("/api/v*/reviews/**").hasAnyAuthority("USER")
+//                .requestMatchers("/api/v*/bills/**").hasAnyAuthority("USER")
                 .requestMatchers("/api/v*/users/**").permitAll()
-                .requestMatchers("/api/v*/books/**").permitAll()
-                .requestMatchers("/api/v*/orders/**").permitAll()
-                .requestMatchers("/api/v*/reviews/**").permitAll()
-                .anyRequest().authenticated().and().formLogin();
+                .requestMatchers("/api/v*/books/**").access("hasAnyAuthority('USER') or hasAnyAuthority('ADMIN')")
+                .requestMatchers("/api/v*/orders/**").access("hasAnyAuthority('USER') or hasAnyAuthority('ADMIN')")
+                .requestMatchers("/api/v*/reviews/**").access("hasAnyAuthority('USER') or hasAnyAuthority('ADMIN')")
+                .requestMatchers("/api/v*/bills/**").access("hasAnyAuthority('USER') or hasAnyAuthority('ADMIN')")
+
+                .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
-//        http.addFi
+        http.addFilterBefore(jwtAthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

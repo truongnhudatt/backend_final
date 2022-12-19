@@ -3,6 +3,7 @@ package com.example.backend_final.service.Impl;
 import com.example.backend_final.model.User;
 import com.example.backend_final.payload.request.SignUp;
 import com.example.backend_final.repository.UserRepo;
+import com.example.backend_final.security.PasswordEncoder;
 import com.example.backend_final.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -72,8 +76,21 @@ public class UserServiceImpl implements UserService {
         user.setUsername(signUp.getUsername());
         user.setFirstName(signUp.getFirstName());
         user.setLastName(signUp.getLastName());
-        user.setPassword(signUp.getPassword());
+//        user.setPassword(signUp.getPassword());
+        user.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(signUp.getPassword()));
         user.setRole(signUp.getRole());
         return userRepo.save(user);
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepo.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepo.existsByEmail(email);
+    }
+
+
 }

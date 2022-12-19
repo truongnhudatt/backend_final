@@ -28,8 +28,8 @@ public class Review {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
-
+    @Column(nullable = false)
     private float score;
-
+    @Column(nullable = false)
     private String comment;
 }

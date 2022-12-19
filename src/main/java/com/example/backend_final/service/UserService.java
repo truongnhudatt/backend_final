@@ -29,4 +29,8 @@ public interface UserService extends UserDetailsService {
     Page<User> findAll(Pageable pageable);
 
     User userSignup(SignUp signUp);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }

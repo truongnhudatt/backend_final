@@ -1,31 +1,15 @@
 package com.example.backend_final;
 
-import com.example.backend_final.dto.BookDto;
-import com.example.backend_final.dto.OrderDto;
-import com.example.backend_final.dto.UserDto;
-import com.example.backend_final.error.BookNotFoundException;
-import com.example.backend_final.error.OrderException;
-import com.example.backend_final.model.Order;
-import com.example.backend_final.payload.request.SignUp;
-import com.example.backend_final.payload.response.UserResp;
 import com.example.backend_final.repository.BookRepo;
-import com.example.backend_final.repository.UserRepo;
 import com.example.backend_final.security.PasswordEncoder;
 import com.example.backend_final.service.OrderService;
 import com.example.backend_final.service.UserService;
 import com.example.backend_final.util.Mapper;
-import com.example.backend_final.util.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @SpringBootApplication
 public class BackendFinalApplication {
@@ -50,23 +34,23 @@ public class BackendFinalApplication {
 	@Bean
 	CommandLineRunner run() throws Exception {
 		return args -> {
-			SignUp signup = new SignUp();
-			signup.setEmail("truongnhudatptit@gmail.com");
-			signup.setUsername("truongnhudat");
-			signup.setFirstName("Truong");
-			signup.setPassword(passwordEncoder.bCryptPasswordEncoder().encode("truongnhudat@"));
-			signup.setLastName("Dat");
-			signup.setRole(Role.valueOf("ADMIN"));
-			userService.userSignup(signup);
-
-			SignUp signup1 = new SignUp();
-			signup1.setEmail("truongnhudatptit1@gmail.com");
-			signup1.setUsername("truongnhudat1");
-			signup1.setFirstName("Truong");
-			signup1.setPassword(passwordEncoder.bCryptPasswordEncoder().encode("truongnhudat@1"));
-			signup1.setLastName("Dat");
-			signup1.setRole(Role.valueOf("USER"));
-			userService.userSignup(signup1);
+//			SignUp signup = new SignUp();
+//			signup.setEmail("truongnhudatptit@gmail.com");
+//			signup.setUsername("truongnhudat");
+//			signup.setFirstName("Truong");
+//			signup.setPassword(passwordEncoder.bCryptPasswordEncoder().encode("truongnhudat@"));
+//			signup.setLastName("Dat");
+//			signup.setRole(Role.valueOf("ADMIN"));
+//			userService.userSignup(signup);
+//
+//			SignUp signup1 = new SignUp();
+//			signup1.setEmail("truongnhudatptit1@gmail.com");
+//			signup1.setUsername("truongnhudat1");
+//			signup1.setFirstName("Truong");
+//			signup1.setPassword(passwordEncoder.bCryptPasswordEncoder().encode("truongnhudat@1"));
+//			signup1.setLastName("Dat");
+//			signup1.setRole(Role.valueOf("USER"));
+//			userService.userSignup(signup1);
 
 
 //			BookDto bookDTO = new BookDto();

@@ -52,6 +52,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(Long aLong) {
+        Book book = bookRepo.findById(aLong).orElseThrow();
+        book.getImageList().forEach(img -> imageStorageService.deleteFile(img.getFileName()));
         bookRepo.deleteById(aLong);
     }
 

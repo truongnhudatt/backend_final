@@ -77,27 +77,43 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> createOrder(OrderRequest orderRequest) throws BookNotFoundException {
         User user = userService.findByUsername(orderRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Cannot find user with username: "+ orderRequest.getUsername()));
-        Order order = new Order();
-        for(Map.Entry item: orderRequest.getListItems().entrySet()){
-            Book bookTmp = bookService.findById((Long) item.getKey()).orElseThrow(() -> new BookNotFoundException("Cannot find book with bookId: " + item.getKey()));
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setBook(bookTmp);
-            orderDetail.setQuantity((Integer) item.getValue());
-            orderDetail.setPrice(bookTmp.getPrice());
-            orderDetail.setUnitPrice(orderDetail.getPrice().multiply(new BigDecimal(orderDetail.getQuantity())));
-            order.getOrderDetailList().add(orderDetail);
-            orderDetail.setOrder(order);
+        Optional<Order> orderTmp = orderRepo.getOrderByUsername(orderRequest.getUsername());
+        Order order;
+        if(orderTmp.isPresent()) {
+            order = orderTmp.get();
+            for (Map.Entry item : orderRequest.getListItems().entrySet()) {
+                Book bookTmp = bookService.findById((Long) item.getKey()).orElseThrow(() -> new BookNotFoundException("Cannot find book with bookId: " + item.getKey()));
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setBook(bookTmp);
+                orderDetail.setQuantity((Integer) item.getValue());
+                orderDetail.setPrice(bookTmp.getPrice());
+                orderDetail.setUnitPrice(orderDetail.getPrice().multiply(new BigDecimal(orderDetail.getQuantity())));
+                order.getOrderDetailList().add(orderDetail);
+                orderDetail.setOrder(order);
+            }
+        }
+        else {
+            order = new Order();
+            for (Map.Entry item : orderRequest.getListItems().entrySet()) {
+                Book bookTmp = bookService.findById((Long) item.getKey()).orElseThrow(() -> new BookNotFoundException("Cannot find book with bookId: " + item.getKey()));
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setBook(bookTmp);
+                orderDetail.setQuantity((Integer) item.getValue());
+                orderDetail.setPrice(bookTmp.getPrice());
+                orderDetail.setUnitPrice(orderDetail.getPrice().multiply(new BigDecimal(orderDetail.getQuantity())));
+                order.getOrderDetailList().add(orderDetail);
+                orderDetail.setOrder(order);
+            }
         }
         order.setOrderStatus(OrderStatus.NEW);
         order.setUser(user);
-        order.setCreated(new Date());
-        order.setTotalPrice(order.getOrderDetailList().stream().map(ord -> ord.getUnitPrice()).reduce(BigDecimal.ZERO,BigDecimal::add));
         user.getOrderList().add(order);
         return Optional.of(orderRepo.save(order));
     }
 
+
     @Override
-    public List<Order> getOrderByUserName(String username){
+    public Optional<Order> getOrderByUserName(String username){
         return orderRepo.getOrderByUsername(username);
     }
 

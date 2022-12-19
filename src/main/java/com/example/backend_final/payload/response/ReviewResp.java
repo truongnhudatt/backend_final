@@ -5,6 +5,7 @@ import com.example.backend_final.dto.OrderDto;
 import com.example.backend_final.dto.ReviewDto;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @ToString
 @NoArgsConstructor
-public class ReviewResp {
+public class ReviewResp implements Serializable {
     private List<ReviewDto> reviewDtoList;
 
     private int pageNo;

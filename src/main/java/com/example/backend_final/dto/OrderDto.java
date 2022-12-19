@@ -5,18 +5,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Getter
 @ToString
-public class OrderDto {
+public class OrderDto implements Serializable {
     private long id;
     private String username;
     private List<OrderDetailDto> orderDetailDtoList;
-    private Date created = new Date();
-    private BigDecimal totalPrice;
 }

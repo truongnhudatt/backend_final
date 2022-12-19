@@ -36,4 +36,8 @@ public class OrderDetail {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "bill_id")
+    private Bill bill;
 }

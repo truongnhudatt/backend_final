@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -34,10 +32,10 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
-    private BigDecimal totalPrice;
+//    private BigDecimal totalPrice;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    private Date created;
+//    private Date created;
 }
