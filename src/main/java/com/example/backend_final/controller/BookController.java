@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -114,5 +115,19 @@ public class BookController {
         bookResp.setLast(bookPage.isLast());
 //        return ResponseEntity.ok(bookResp);
         return ResponseEntity.ok().body(new MessageResp(HttpStatus.OK,"", bookResp));
+    }
+
+    @GetMapping("/image/{fileName:.+}")
+    // /files/06a290064eb94a02a58bfeef36002483.png
+    public ResponseEntity<byte[]> readDetailFile(@PathVariable String fileName) {
+        try {
+            byte[] bytes = imageStorageService.readFileContent(fileName);
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(bytes);
+        }catch (Exception exception) {
+            return ResponseEntity.noContent().build();
+        }
     }
 }

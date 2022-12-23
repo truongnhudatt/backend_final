@@ -10,6 +10,7 @@ import com.example.backend_final.payload.response.UserResp;
 import com.example.backend_final.security.config.JwtUtils;
 import com.example.backend_final.service.UserService;
 import com.example.backend_final.util.Mapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +22,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -44,7 +49,6 @@ public class UserController {
 
     @Autowired
     private JwtUtils jwtUtils;
-
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,
@@ -75,15 +79,26 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> registerUser(@RequestBody SignUp signUp){
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUp signUp){
         if(userService.existsByUsername(signUp.getUsername()) && userService.existsByEmail(signUp.getEmail())){
-            return ResponseEntity.badRequest().body(new MessageResp(HttpStatus.BAD_REQUEST, "Username or email is already taken", ""));
+//            Map<String, String> errors = new HashMap<>();
+//            errors.put("")
+            return ResponseEntity.badRequest().body(new MessageResp(HttpStatus.BAD_REQUEST, "Validation Failed", "Tên người dùng hoặc email đã tồn tại"));
         }
         return ResponseEntity.ok().body(new MessageResp(HttpStatus.OK,"User registered successfully!", mapper.toUserDto(userService.userSignup(signUp))));
     }
-
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<MessageResp> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return ResponseEntity.badRequest().body(new MessageResp(HttpStatus.BAD_REQUEST,"Validation Failed", errors));
+    }
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody Login login){
+    public ResponseEntity<?> loginUser(@Valid @RequestBody Login login){
         System.out.println(login);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword())
